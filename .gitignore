@@ -1,5 +1,6 @@
 # Workspace
-workspace/
+workspace/*
+!workspace/_slides_input_output_
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
