@@ -2,6 +2,8 @@
 workspace/*
 !workspace/_slides_input_output_
 
+.DS_Store
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
