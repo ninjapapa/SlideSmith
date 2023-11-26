@@ -23,6 +23,9 @@ for shape in slide.shapes:
     # Check if shape is a table
     elif shape.shape_type == 19:  # 19 corresponds to a table
         table = shape.table
+        num_columns = len(table.columns)
+        print(f"Number of Columns: {num_columns}")
+
         print(dir(table._graphic_frame))
         # Create a new table with an additional column
         # num_rows = len(table.rows)
@@ -42,6 +45,8 @@ for shape in slide.shapes:
                 print("column:", c_idx)
                 if cell.text:
                     print(cell.text)
+                first_paragraph = cell.text_frame.paragraphs[0]
+                first_paragraph.runs[0].text = 'hahahaha\n dadsa'  # Replace 'New Text' with your text
 
     # Handling other shapes like images or charts can be done here
     # For example, shape.shape_type == 13 corresponds to a chart
