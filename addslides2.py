@@ -37,7 +37,7 @@ def add_slides_from_json(json_filename):
 
         # Add content to the slide
         content = slide.placeholders[21]
-        cols_cnt = len(page['content']['list'])
+        cols_cnt = len(page['content'])
         shape = content.insert_table(rows=2, cols=cols_cnt)
         table = shape.table
         

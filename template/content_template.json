@@ -2,17 +2,19 @@
   "pages": [
     {
       "pageTitle": "Page 1 Title",
-      "content": {
-        "list": [
-          {
-            "title": "Main Point 1",
-            "subpoints": [
-              "Sub Point 1.1",
-              "Sub Point 1.2"
-            ]
-          }
-        ]
-      }
+      "content": [
+        {
+          "title": "Main Point 1",
+          "subpoints": [
+            "Sub Point 1.1",
+            "Sub Point 1.2"
+          ]
+        },
+        {
+          "title":"Main Point 2"
+        }
+      ],
+      "notes": "some desc"
     }
   ]
 }
