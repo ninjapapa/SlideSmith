@@ -1,6 +1,30 @@
 from pptx import Presentation
 import sys
 
+from pptx.oxml.xmlchemy import OxmlElement
+
+
+def getBulletInfo(paragraph, run=None):
+    """Returns the attributes of the given <a:pPr> OxmlElement
+    as well as its runs font-size.
+
+    *param: paragraph* pptx _paragraph object
+    *param: run* [optional] specific _run object
+    """
+    pPr = paragraph._p.get_or_add_pPr()
+    b = pPr.get_or_add_buSzPct()
+    if run is None:
+        run = paragraph.runs[0]
+    p_info = {
+        "marL": pPr.attrib['marL'],
+        "indent": pPr.attrib['indent'],
+        # "a:buSzPct": b,
+        "level": paragraph.level,
+        "fontName": run.font.name,
+        "fontSize": run.font.size,
+    }
+    return p_info
+
 
 # read in file name
 ppt_name = sys.argv[1]
@@ -46,6 +70,8 @@ for shape in slide.shapes:
                 if cell.text:
                     print(cell.text)
                 first_paragraph = cell.text_frame.paragraphs[0]
+                p_info = getBulletInfo(first_paragraph)
+                print(p_info)
                 first_paragraph.runs[0].text = 'hahahaha\n dadsa'  # Replace 'New Text' with your text
 
     # Handling other shapes like images or charts can be done here

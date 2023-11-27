@@ -1,7 +1,16 @@
 import json
 from pptx import Presentation
+from pptx.oxml.xmlchemy import OxmlElement
 import os
 import sys
+
+def _SubElement(parent, tagname, **kwargs):
+    """Helper for Paragraph bullet Point
+    """
+    element = OxmlElement(tagname)
+    element.attrib.update(kwargs)
+    parent.append(element)
+    return element
 
 def _replace_paragraph_text(p, t, font=None):
     if p.runs:
@@ -25,12 +34,24 @@ def write_cell(cell, text_list):
         first_paragraph = cell.text_frame.add_paragraph()
 
 
-    # Clear the first run's text (preserves formatting)
+    first_pPr = first_paragraph._p.get_or_add_pPr()
+    # can't access buSzPct & buChar, so overwrite them
+    _SubElement(parent=first_pPr, tagname="a:buSzPct", val="111000")
+    _SubElement(parent=first_pPr, tagname='a:buChar', char="•")
+    # Write the first run's text (replace)
     _replace_paragraph_text(first_paragraph, text_list[0])
     org_font = first_paragraph.runs[0].font if first_paragraph.runs else None
+
     for t in text_list[1:]:
         p = cell.text_frame.add_paragraph()
         p.level = first_paragraph.level
+        pPr = p._p.get_or_add_pPr()
+        # Set bullet the same as first paragraph
+        pPr.set('marL', first_pPr.attrib['marL'])
+        pPr.set('indent', first_pPr.attrib['indent'])
+        _SubElement(parent=pPr, tagname="a:buSzPct", val="111000")
+        _SubElement(parent=pPr, tagname='a:buChar', char="•")
+        # Write the new text
         _replace_paragraph_text(p, t, org_font)
 
 
