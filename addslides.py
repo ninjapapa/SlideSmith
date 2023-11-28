@@ -56,10 +56,11 @@ def add_slides_from_json(json_filename):
             p.level = 0
 
             # Iterate over each subpoint
-            for subpoint in item['subpoints']:
-                sp = tf.add_paragraph()
-                sp.text = subpoint
-                sp.level = 1
+            if (item.get('subpoints')):
+                for subpoint in item['subpoints']:
+                    sp = tf.add_paragraph()
+                    sp.text = subpoint
+                    sp.level = 1
 
         # Define the size and position of the text box
         left = slide_width - Inches(2)  # Halfway across the width of a standard slide
@@ -67,20 +68,21 @@ def add_slides_from_json(json_filename):
         width = Inches(2)   # About 1/4 of the page width
         height = Inches(3)  # About 1/2 of the page height
 
-        # Add the text box
-        text_box = slide.shapes.add_textbox(left, top, width, height)
-        text_frame = text_box.text_frame
-        # Set word wrap
-        text_frame.word_wrap = True
-        # Set the background color of the text box to golden
-        text_box.fill.solid()
-        text_box.fill.fore_color.rgb = RGBColor(255, 215, 0)  # RGB values for golden color
+        if (item.get('notes')):
+            # Add the text box
+            text_box = slide.shapes.add_textbox(left, top, width, height)
+            text_frame = text_box.text_frame
+            # Set word wrap
+            text_frame.word_wrap = True
+            # Set the background color of the text box to golden
+            text_box.fill.solid()
+            text_box.fill.fore_color.rgb = RGBColor(255, 215, 0)  # RGB values for golden color
 
-        # Add the notes text
-        p = text_frame.paragraphs[0]
-        p.text = page['notes']
-        p.font.size = Pt(12)  # Adjust font size as needed
-        p.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
+            # Add the notes text
+            p = text_frame.paragraphs[0]
+            p.text = page['notes']
+            p.font.size = Pt(12)  # Adjust font size as needed
+            p.alignment = PP_PARAGRAPH_ALIGNMENT.LEFT
 
     # Save the modified presentation
     ppt.save('sample_modified.pptx')
